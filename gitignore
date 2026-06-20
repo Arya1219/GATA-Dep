@@ -1,0 +1,14 @@
+*.pth
+*.pt
+*.ckpt
+__pycache__/
+.ipynb_checkpoints/
+
+data/
+outputs/
+results/
+gata_cache/
+
+*.csv
+*.npy
+*.npz
