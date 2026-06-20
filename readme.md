@@ -1,4 +1,3 @@
-Here is the `README.md` file formatted exactly as you provided, using standard Markdown for a clean, professional GitHub repository look.
 
 ```markdown
 # GATA-Dep: Gender-Aware Temporal Alignment for Multimodal Depression Detection
@@ -29,6 +28,12 @@ GATA-Dep addresses this challenge by learning temporal alignments directly from 
 * Provided theoretical analysis linking temporal alignment to information preservation.
 
 ## Architecture
+
+![GATA-Dep Architecture](figures/architecture.png.jpeg)
+*Figure 1: Overall architecture of the GATA-Dep framework.*
+
+![GATA Module](figures/gata_module.png)
+*Figure 2: Detailed view of the Gender-Aware Temporal Alignment (GATA) module.*
 
 **Pipeline:**
 
@@ -100,7 +105,7 @@ GATA-Dep/
 │   └── GATA_Dep_Draft.pdf
 │
 ├── figures/
-│   ├── architecture.png
+│   ├── architecture.png.jpeg
 │   └── gata_module.png
 │
 ├── requirements.txt
