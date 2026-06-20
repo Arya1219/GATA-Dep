@@ -1,4 +1,4 @@
-# [cite_start]DynDep: Dynamical Topology-Based Multimodal Depression Detection [cite: 1]
+# DynDep: Dynamical Topology-Based Multimodal Depression Detection
 
 ## Overview
 [cite_start]Existing multimodal depression detection systems primarily treat depression assessment as a static classification problem[cite: 5]. [cite_start]Audio, facial expressions, gaze, head pose, and behavioral signals are fused to predict a binary depression label[cite: 6]. [cite_start]While effective, such approaches largely ignore the temporal evolution of behavioral states throughout an interview[cite: 7]. 
