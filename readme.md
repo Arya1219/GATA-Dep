@@ -106,6 +106,16 @@ Depression Classification
 
 ---
 
+## Results
+
+| Metric | Value |
+|----------|----------|
+| F1 Score | 0.629 |
+| Precision | 0.472 |
+| Recall | 0.950 |
+
+Dataset: DAIC-WOZ
+
 ## Ablation Studies
 
 Ablation experiments are conducted to isolate the contribution of each design choice:
