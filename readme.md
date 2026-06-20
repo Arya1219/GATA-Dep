@@ -19,6 +19,7 @@
   - [Pipeline](#pipeline)
 - [Ablation Studies](#ablation-studies)
 - [Interpretability](#interpretability)
+- [Author](#author)
 
 ---
 
@@ -120,3 +121,9 @@ Ablation experiments are conducted to isolate the contribution of each design ch
 ## Interpretability
 
 GATA-Dep provides interpretability through **learned temporal offset distributions** per modality, enabling analysis of which behavioral signals lead or lag relative to others during clinical interviews. This offers both diagnostic insight and theoretical alignment with the **Data Processing Inequality**, which motivates preserving temporal structure in multimodal representations.
+
+---
+
+## Author
+
+**Arya Giri**: Indian Institute of Technology (BHU) Varanasi, Department of Biomedical Engineering
