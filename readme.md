@@ -1,159 +1,122 @@
-
-```markdown
 # GATA-Dep: Gender-Aware Temporal Alignment for Multimodal Depression Detection
 
-## Overview
-**GATA-Dep** is a multimodal deep learning framework for depression detection from clinical interviews. The model introduces a Gender-Aware Temporal Alignment (GATA) module that learns modality-specific temporal offsets and gender-conditioned alignment weights to better capture asynchronous behavioral signals across multiple modalities.
+<p align="center">
+  <img src="figures/architecture.png.jpeg" alt="GATA-Dep Architecture" width="800"/>
+  <br/>
+  <em>Figure 1: Overall architecture of the GATA-Dep framework.</em>
+</p>
 
-The framework is evaluated on the DAIC-WOZ benchmark and integrates audio, facial action units, facial landmarks, gaze features, and head pose signals within a transformer-based architecture.
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Motivation](#motivation)
+- [Key Contributions](#key-contributions)
+- [Architecture](#architecture)
+  - [Input Modalities](#input-modalities)
+  - [GATA Module](#gata-module)
+  - [Pipeline](#pipeline)
+- [Ablation Studies](#ablation-studies)
+- [Interpretability](#interpretability)
+
+---
+
+## Overview
+
+**GATA-Dep** is a multimodal deep learning framework for depression detection from clinical interviews. The model introduces a **Gender-Aware Temporal Alignment (GATA)** module that learns modality-specific temporal offsets and gender-conditioned alignment weights to better capture asynchronous behavioral signals across multiple modalities.
+
+The framework is evaluated on the **DAIC-WOZ benchmark** and integrates audio, facial action units, facial landmarks, gaze features, and head pose signals within a transformer-based architecture.
+
+---
 
 ## Motivation
-Human behavioral cues are rarely synchronized. 
 
-In depression assessment interviews, vocal changes, facial expressions, gaze shifts, and head movements often occur with temporal delays relative to one another. Most multimodal fusion methods assume perfect synchronization and therefore may fail to capture these delayed interactions.
+Human behavioral cues are rarely synchronized. In depression assessment interviews, vocal changes, facial expressions, gaze shifts, and head movements often occur with **temporal delays** relative to one another. Most multimodal fusion methods assume perfect synchronization and therefore fail to capture these delayed interactions.
 
-GATA-Dep addresses this challenge by learning temporal alignments directly from data instead of assuming fixed synchronization.
+> **GATA-Dep** addresses this by learning temporal alignments directly from data — rather than assuming fixed synchronization.
+
+---
 
 ## Key Contributions
-* Introduced Gender-Aware Temporal Alignment (GATA) for multimodal behavioral modeling.
-* Learned temporal offsets within a window of ±K frames.
-* Incorporated gender-conditioned alignment distributions.
-* Developed a transformer-based multimodal fusion framework.
-* Performed participant-level depression prediction.
-* Conducted ablation studies on:
-  * Temporal offset range
-  * Gender conditioning
-  * Missing-modality robustness
-* Analyzed interpretability through learned temporal offset distributions.
-* Provided theoretical analysis linking temporal alignment to information preservation.
+
+- **Gender-Aware Temporal Alignment (GATA):** A novel module for multimodal behavioral modeling that learns modality-specific temporal offsets within a window of ±K frames.
+- **Gender-Conditioned Alignment:** Incorporates gender information to modulate alignment distributions across modalities.
+- **Transformer-Based Fusion:** End-to-end multimodal fusion architecture for participant-level depression prediction.
+- **Ablation Studies** on:
+  - Temporal offset range (±K)
+  - Effect of gender conditioning
+  - Missing-modality robustness
+- **Interpretability Analysis** via learned temporal offset distributions.
+- **Theoretical Grounding:** Analysis linking temporal alignment to information preservation via the Data Processing Inequality.
+
+---
 
 ## Architecture
 
-![GATA-Dep Architecture](figures/architecture.png.jpeg)
-*Figure 1: Overall architecture of the GATA-Dep framework.*
+### Input Modalities
 
-![GATA Module](figures/gata_module.png)
-*Figure 2: Detailed view of the Gender-Aware Temporal Alignment (GATA) module.*
+| Modality | Feature Dimension |
+|---|---|
+| Audio Features | 79D |
+| Facial Action Units | 20D |
+| Facial Landmarks | 204D |
+| Gaze Features | 12D |
+| Head Pose Features | 6D |
 
-**Pipeline:**
+### GATA Module
 
-```text
+<p align="center">
+  <img src="figures/gata_module.png" alt="GATA Module" width="700"/>
+  <br/>
+  <em>Figure 2: Detailed view of the Gender-Aware Temporal Alignment (GATA) module.</em>
+</p>
+
+The GATA module operates per modality to:
+
+1. Estimate a distribution over temporal offsets (±K frames)
+2. Condition the offset weights on a gender embedding
+3. Produce a temporally re-aligned feature sequence for downstream fusion
+
+### Pipeline
+
+```
 Audio Features (79D)
 Action Units (20D)
 Facial Landmarks (204D)
 Gaze Features (12D)
 Head Pose Features (6D)
-
-        ↓
-
+         │
+         ▼
 Modality-Specific Encoders
-
-        ↓
-
+         │
+         ▼
 Gender-Aware Temporal Alignment (GATA)
-
-        ↓
-
+         │
+         ▼
 Transformer Encoder
-
-        ↓
-
+         │
+         ▼
 Participant-Level Aggregation
-
-        ↓
-
+         │
+         ▼
 Depression Classification
-
 ```
 
-## Dataset
+---
 
-### DAIC-WOZ
+## Ablation Studies
 
-The model is evaluated on the DAIC-WOZ depression benchmark.
+Ablation experiments are conducted to isolate the contribution of each design choice:
 
-**Modalities used:**
+| Component | Description |
+|---|---|
+| Temporal Offset Range | Varying ±K to assess sensitivity to alignment window size |
+| Gender Conditioning | Comparing aligned vs. non-gender-conditioned offset distributions |
+| Missing Modality Robustness | Evaluating performance under partial modality dropout |
 
-| Modality | Dimension |
-| --- | --- |
-| Audio | 79 |
-| Action Units | 20 |
-| Facial Landmarks | 204 |
-| Gaze | 12 |
-| Head Pose | 6 |
+---
 
-## Model Configuration
+## Interpretability
 
-| Component | Value |
-| --- | --- |
-| Hidden Dimension | 256 |
-| Transformer Layers | 2 |
-| Attention Heads | 8 |
-| Dropout | 0.1 |
-| Temporal Window | K = 12 |
-| Optimizer | AdamW |
-| Mixed Precision | Enabled |
-| Evaluation | Participant-Level |
-
-## Repository Structure
-
-```text
-GATA-Dep/
-│
-├── GATA_Dep_final.ipynb
-├── paper/
-│   └── GATA_Dep_Draft.pdf
-│
-├── figures/
-│   ├── architecture.png.jpeg
-│   └── gata_module.png
-│
-├── requirements.txt
-├── README.md
-└── .gitignore
-
-```
-
-## Experiments
-
-The repository contains implementations for:
-
-* Full GATA-Dep model
-* Baseline multimodal fusion model
-* Gender ablation studies
-* Temporal offset ablation studies
-* Missing-modality robustness analysis
-* Participant-level evaluation
-
-## Results
-
-The proposed framework demonstrates strong participant-level depression detection performance while providing interpretable temporal alignment distributions and robust multimodal fusion.
-
-Complete experimental details are available in the accompanying paper.
-
-## Research Paper
-
-A full research manuscript describing the methodology, theoretical analysis, experimental setup, and ablation studies is included in:
-
-[`paper/GATA_Dep_Draft.pdf`](https://www.google.com/search?q=paper/GATA_Dep_Draft.pdf)
-
-## Author
-
-**Arya Giri** Integrated Dual Degree (Biomedical Engineering)
-
-Indian Institute of Technology (BHU), Varanasi
-
-## Citation
-
-```bibtex
-@article{giri2025gatadep,
-  title={GATA-Dep: Gender-Aware Temporal Alignment for Multimodal Depression Detection},
-  author={Giri, Arya},
-  year={2025}
-}
-
-```
-
-```
-
-```
+GATA-Dep provides interpretability through **learned temporal offset distributions** per modality, enabling analysis of which behavioral signals lead or lag relative to others during clinical interviews. This offers both diagnostic insight and theoretical alignment with the **Data Processing Inequality**, which motivates preserving temporal structure in multimodal representations.
